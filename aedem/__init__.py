@@ -15,6 +15,9 @@ def create_app() -> Flask:
 
     # ensure all database tables are created
     from aedem.models import initialize_database, engine
+    from aedem.models.privileges import Privilege
+    from aedem.models.flags import Flag
+    from aedem.models.users import User
     initialize_database(engine)
     
     # create Flask blueprint
