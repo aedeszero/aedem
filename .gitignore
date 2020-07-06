@@ -1,0 +1,13 @@
+# environment
+env/
+.vscode
+.DS_Store
+dist/
+
+# cache
+__pycache__/
+*.pyc
+
+# logs
+*.log
+*~
