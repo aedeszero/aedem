@@ -22,9 +22,9 @@ class Privilege(Base):
                         nullable = False,
                         server_default = text('NOW()'))
 
-    def __init__(self, identifier, assignable = True):
+    def __init__(self, identifier, assignable = True) -> None:
         self.identifier = identifier
         self.assignable = assignable
     
-    def __repr__(self):
+    def __repr__(self) -> str:
         return "<Privilege '{name}'>".format(name = self.identifier)
