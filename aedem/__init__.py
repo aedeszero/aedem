@@ -12,6 +12,10 @@ def create_app() -> Flask:
         app.config.from_object("config.testing.Config")
     else:
         app.config.from_object("config.development.Config")
+
+    # ensure all database tables are created
+    from aedem.models import Base, engine
+    Base.metadata.create_all(engine)
     
     # create Flask blueprint
     blueprint = Blueprint(
