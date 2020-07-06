@@ -14,8 +14,8 @@ def create_app() -> Flask:
         app.config.from_object("config.development.Config")
 
     # ensure all database tables are created
-    from aedem.models import Base, engine
-    Base.metadata.create_all(engine)
+    from aedem.models import initialize_database, engine
+    initialize_database(engine)
     
     # create Flask blueprint
     blueprint = Blueprint(
