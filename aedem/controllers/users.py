@@ -133,3 +133,32 @@ class SpecificUser(Resource):
         }
 
         return jsonify(response)
+
+    @namespace.doc('update_user')
+    def put(self, id):
+        '''Atualiza os dados de um usuário'''
+        session = Session()
+
+        # look up given user
+        given_user = session.query(User).filter_by(id = id)
+
+        # check if given user exists
+        if given_user.scalar() is None:
+            namespace.abort(404)
+
+        # update user data with given values
+        user = given_user.one()
+
+        for datafield in request.args:
+            setattr(user, datafield, request.args[datafield])
+
+        session.add(user)
+        session.commit()
+
+        # respond request
+        response = {
+            "message": "Successfully updated",
+            "request_fields": request.args,
+            "response": dictionarize(user)
+        }
+        return jsonify(response)
