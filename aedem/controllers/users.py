@@ -25,3 +25,18 @@ class UserList(Resource):
             users.append(dictionarize(user))
         
         return jsonify(users)
+
+@namespace.route('/<id>')
+@namespace.param('id', 'Identificador do usuário')
+@namespace.response(404, 'Usuário não encontrado')
+class SpecificUser(Resource):
+    @namespace.doc('get_user')
+    def get(self, id):
+        '''Mostrar um usuário específico'''
+        session = Session()
+
+        user = session.query(User).filter_by(id = id).first()
+        if user is not None:
+            return jsonify(dictionarize(user))
+        else:
+            namespace.abort(404)
