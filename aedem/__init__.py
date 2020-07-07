@@ -36,6 +36,10 @@ def create_app() -> Flask:
         doc = app.config['DOCS_RESOURCE']
     )
 
+    # register controllers
+    from aedem.controllers.users import namespace as usercontroller
+    api.add_namespace(usercontroller)
+
     # register blueprint
     app.register_blueprint(blueprint)
 
