@@ -48,7 +48,7 @@ create_user_model = namespace.model("create_user", {
         required = True)
 })
 
-@namespace.route('/')
+@namespace.route('')
 class UserList(Resource):
     @namespace.doc('list_users')
     def get(self):
