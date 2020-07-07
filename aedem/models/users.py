@@ -39,8 +39,7 @@ class User(Base):
     area            = Column(String,
                         nullable = False)
     flag_id         = Column(String,
-                        ForeignKey('flags.identifier', ondelete = 'CASCADE'),
-                        nullable = False)
+                        ForeignKey('flags.identifier', ondelete = 'CASCADE'))
     flag            = relationship('Flag', backref = 'users')
     last_updated    = Column(DateTime,
                         nullable = False,
