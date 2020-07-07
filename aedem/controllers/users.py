@@ -107,3 +107,29 @@ class SpecificUser(Resource):
             return jsonify(dictionarize(user))
         else:
             namespace.abort(404)
+
+    @namespace.doc('delete_user')
+    def delete(self, id):
+        '''Deleta um usuário existente'''
+        session = Session()
+
+        # look up given user
+        given_user = session.query(User).filter_by(id = id)
+
+        # check if given user exists
+        if given_user.scalar() is None:
+            namespace.abort(404)
+
+        # delete user from database
+        user = given_user.one()
+        records = dictionarize(user)
+        session.delete(user)
+        session.commit()
+
+        # respond request
+        response = {
+            "message": "Successfully deleted",
+            "records": records
+        }
+
+        return jsonify(response)
