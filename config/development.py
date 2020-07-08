@@ -11,5 +11,5 @@ class Config(BaseConfig):
     DB_HOST         = "localhost"
     DB_PORT         = 5432
     DB_NAME         = "aedem"
-    DB_USERNAME     = ""
-    DB_PASSWORD     = ""
+    DB_USERNAME     = "postgres"
+    DB_PASSWORD     = "23042000"

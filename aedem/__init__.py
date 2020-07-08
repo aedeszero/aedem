@@ -19,6 +19,7 @@ def create_app() -> Flask:
     from aedem.models.flags import Flag
     from aedem.models.users import User
     from aedem.models.reports import Report
+    from aedem.models.attachments import Attachment
     initialize_database(engine)
     
     # create Flask blueprint
