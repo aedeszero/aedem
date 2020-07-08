@@ -39,7 +39,9 @@ def create_app() -> Flask:
 
     # register controllers
     from aedem.controllers.users import namespace as usercontroller
+    from aedem.controllers.privileges import namespace as privilegecontroller
     api.add_namespace(usercontroller)
+    api.add_namespace(privilegecontroller)
 
     # register blueprint
     app.register_blueprint(blueprint)
