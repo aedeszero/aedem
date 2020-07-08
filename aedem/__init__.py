@@ -18,6 +18,7 @@ def create_app() -> Flask:
     from aedem.models.privileges import Privilege
     from aedem.models.flags import Flag
     from aedem.models.users import User
+    from aedem.models.reports import Report
     initialize_database(engine)
     
     # create Flask blueprint
