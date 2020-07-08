@@ -60,7 +60,14 @@ class UserList(Resource):
         for user in session.query(User).all():
             users.append(dictionarize(user))
         
-        return jsonify(users)
+        # respond request
+        response = {
+            "status": 200,
+            "message": "Success",
+            "error": False,
+            "response": users
+        }
+        return jsonify(response)
     
     @namespace.doc('create_user')
     @namespace.expect(create_user_model)
@@ -90,8 +97,14 @@ class UserList(Resource):
         session.add(new_user)
         session.commit()
 
-        # response
-        return jsonify(dictionarize(new_user))
+        # respond request
+        response = {
+            "status": 200,
+            "message": "Success",
+            "error": False,
+            "response": dictionarize(new_user)
+        }
+        return jsonify(response)
 
 @namespace.route('/<id>')
 @namespace.param('id', 'Identificador do usuário')
@@ -103,10 +116,17 @@ class SpecificUser(Resource):
         session = Session()
 
         user = session.query(User).filter_by(id = id).first()
-        if user is not None:
-            return jsonify(dictionarize(user))
-        else:
+        if user is None:
             namespace.abort(404)
+        
+        # respond request
+        response = {
+            "status": 200,
+            "message": "Success",
+            "error": False,
+            "response": dictionarize(user)
+        }
+        return jsonify(response)
 
     @namespace.doc('delete_user')
     def delete(self, id):
@@ -128,10 +148,11 @@ class SpecificUser(Resource):
 
         # respond request
         response = {
-            "message": "Successfully deleted",
-            "records": records
+            "status": 200,
+            "message": "Success",
+            "error": False,
+            "response": records
         }
-
         return jsonify(response)
 
     @namespace.doc('update_user')
@@ -157,8 +178,9 @@ class SpecificUser(Resource):
 
         # respond request
         response = {
-            "message": "Successfully updated",
-            "request_fields": request.args,
+            "status": 200,
+            "message": "Success",
+            "error": False,
             "response": dictionarize(user)
         }
         return jsonify(response)
