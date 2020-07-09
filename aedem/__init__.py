@@ -20,6 +20,7 @@ def create_app() -> Flask:
     from aedem.models.users import User
     from aedem.models.reports import Report
     from aedem.models.attachments import Attachment
+    from aedem.models.notifications import Notification
     initialize_database(engine)
     
     # create Flask blueprint
@@ -43,10 +44,11 @@ def create_app() -> Flask:
     from aedem.controllers.privileges import namespace as privilegecontroller
     from aedem.controllers.flags import namespace as flagcontroller
     from aedem.controllers.reports import namespace as reportcontroller
+    from aedem.controllers.notifications import namespace as notifcontroller
     api.add_namespace(usercontroller)
     api.add_namespace(privilegecontroller)
     api.add_namespace(flagcontroller)
-    api.add_namespace(reportcontroller)
+    api.add_namespace(notifcontroller)
 
     # register blueprint
     app.register_blueprint(blueprint)

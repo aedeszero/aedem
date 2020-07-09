@@ -41,6 +41,8 @@ class User(Base):
     flag_id         = Column(String,
                         ForeignKey('flags.identifier', ondelete = 'CASCADE'))
     flag            = relationship('Flag', backref = 'users')
+    notifications   = relationship("Notification",
+                        back_populates = "user")
     last_updated    = Column(DateTime,
                         nullable = False,
                         server_default = text('NOW()'), 
