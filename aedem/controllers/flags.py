@@ -206,6 +206,8 @@ class SpecificFlag(Resource):
 
         flag = session.query(Flag).filter_by(identifier = id).one()
 
+        granted = []
+
         if 'privileges' in request.args:
             # get list of privileges
             req_privileges = request.args['privileges'].split(",")
@@ -221,14 +223,12 @@ class SpecificFlag(Resource):
             
             # assign grantable privileges to flag
             flag.privileges = grantable
+
+            for privilege in grantable:
+                granted.append(privilege.identifier)
         
         session.add(flag)
         session.commit()
-
-        # generate a list of granted privileges
-        granted = []
-        for privilege in grantable:
-            granted.append(privilege.identifier)
 
         # respond request
         response = {
