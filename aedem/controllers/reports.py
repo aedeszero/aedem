@@ -5,6 +5,7 @@ from aedem.utils import dictionarize
 
 from aedem.models import Session
 from aedem.models.reports import Report
+from aedem.models.attachments import Attachment
 
 namespace = Namespace(
     'reports',
@@ -21,16 +22,19 @@ create_report_model = namespace.model("create_report", {
         required = True),
     "area": fields.String(
         description = "Bairro da denúncia",
-        required = False),
+        required = True),
     "geolatitude": fields.String(
         description = "Coordenada de Latitude da denúncia",
-        required = False),
+        required = True),
     "geolongitude": fields.String(
         description = "Coordenada de Longitude da denúncia",
-        required = False),
+        required = True),
     "description": fields.String(
         description = "Descrição da denúncia",
-        required = False)
+        required = True),
+    "attachments": fields.String(
+        description = "Lista de links das imagens da denúncia",
+        required = True)
 })
 
 @namespace.route('')
@@ -41,16 +45,25 @@ class ReportList(Resource):
         session = Session()
 
         # get list of reports
-        reports = []
+        res = []
         for report in session.query(Report).all():
-            reports.append(dictionarize(report))
+            attachs = []
+            for attach in report.attachments:
+                attachs.append(dictionarize(attach))
+            
+            resp = {
+                "report": dictionarize(report),
+                "attachments": attachs
+            }
+            res.append(resp)
+
         
         # respond request
         response = {
             "status": 200,
             "message": "Success",
             "error": False,
-            "response": reports
+            "response": res
         }
         return jsonify(response)
 
@@ -73,16 +86,31 @@ class ReportList(Resource):
             description = reportdata['description']
         )
 
+        for attachment in reportdata['attachments']:
+            attach = Attachment(
+                attachment_addr = attachment
+            )
+            attach.report = new_report
+            session.add(attach)
+
         # add new report to database
         session.add(new_report)
         session.commit()
+
+        attachs = []
+
+        for item in new_report.attachments:
+            attachs.append(dictionarize(item))
 
         # respond request
         response = {
             "status": 200,
             "message": "Success",
             "error": False,
-            "response": dictionarize(new_report)
+            "response": {
+                "report": dictionarize(new_report),
+                "attachments": attachs
+            }
         }
         return jsonify(response)
 
@@ -98,13 +126,21 @@ class SpecificReport(Resource):
         report = session.query(Report).filter_by(id = id).first()
         if report is None:
             namespace.abort(404)
+
+        attachs = []
+
+        for item in report.attachments:
+            attachs.append(dictionarize(item))
         
         # respond request
         response = {
             "status": 200,
             "message": "Success",
             "error": False,
-            "response": dictionarize(report)
+            "response": {
+                "report": dictionarize(report),
+                "attachments": attachs
+            }
         }
         return jsonify(response)
 
@@ -122,6 +158,11 @@ class SpecificReport(Resource):
 
         # delete report from database
         report = given_report.one()
+        # delete the attachments of the report
+        attachs = []
+        for attach in report.attachments:
+            attachs.append(dictionarize(attach))
+            session.delete(attach)
         records = dictionarize(report)
         session.delete(report)
         session.commit()
@@ -131,7 +172,10 @@ class SpecificReport(Resource):
             "status": 200,
             "message": "Success",
             "error": False,
-            "response": records
+            "response": {
+                "report": records,
+                "attachments": attachs
+            }
         }
         return jsonify(response)
 
@@ -156,12 +200,20 @@ class SpecificReport(Resource):
         session.add(report)
         session.commit()
 
+        attachs = []
+
+        for item in report.attachments:
+            attachs.append(dictionarize(item))
+
         # respond request
         response = {
             "status": 200,
             "message": "Success",
             "error": False,
-            "response": dictionarize(report)
+            "response": {
+                "report": dictionarize(report),
+                "attachments": attachs
+            }
         }
 
         return jsonify(response)
