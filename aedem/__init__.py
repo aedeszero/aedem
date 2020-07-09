@@ -48,6 +48,7 @@ def create_app() -> Flask:
     api.add_namespace(usercontroller)
     api.add_namespace(privilegecontroller)
     api.add_namespace(flagcontroller)
+    api.add_namespace(reportcontroller)
     api.add_namespace(notifcontroller)
 
     # register blueprint
