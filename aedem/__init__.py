@@ -21,6 +21,7 @@ def create_app() -> Flask:
     from aedem.models.reports import Report
     from aedem.models.attachments import Attachment
     from aedem.models.notifications import Notification
+    from aedem.models.replies import Reply
     initialize_database(engine)
     
     # create Flask blueprint

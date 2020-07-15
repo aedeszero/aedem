@@ -42,7 +42,9 @@ class Report(Base):
 	description 	= Column(String, 
 						nullable = True)
 	attachments 	= relationship('Attachment', 
-						back_populates='report')
+						back_populates = 'report')
+	replies 		= relationship('Reply',
+						back_populates = 'report')
 
 	def __init__(self, state_abbr, city_name, area, geolatitude, geolongitude, 
 				description) -> None:
