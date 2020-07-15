@@ -12,10 +12,10 @@ class Attachment(Base):
 
 	id 				= Column(Integer, 
 						primary_key = True)
-	# user_id 		= Column(UUID(as_uuid = True), 
-	# 					ForeignKey('users.id'))
-	# user 			= relationship("User", 
-	# 					back_populates="attachments")
+	user_id 		= Column(UUID(as_uuid = True), 
+	 					ForeignKey('users.id'))
+	user 			= relationship("User", 
+	 					back_populates="attachments")
 	report_id 		= Column(Integer, 
 						ForeignKey('reports.id'))
 	report 			= relationship("Report", 

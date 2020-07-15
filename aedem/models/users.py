@@ -43,6 +43,10 @@ class User(Base):
     flag            = relationship('Flag', backref = 'users')
     notifications   = relationship("Notification",
                         back_populates = "user")
+    reports       = relationship('Report',
+                        back_populates = 'user')
+    attachments   = relationship('Attachment',
+                        back_populates = 'user')
     last_updated    = Column(DateTime,
                         nullable = False,
                         server_default = text('NOW()'), 
