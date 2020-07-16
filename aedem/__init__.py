@@ -46,11 +46,13 @@ def create_app() -> Flask:
     from aedem.controllers.flags import namespace as flagcontroller
     from aedem.controllers.reports import namespace as reportcontroller
     from aedem.controllers.notifications import namespace as notifcontroller
+    from aedem.controllers.replies import namespace as replycontroller
     api.add_namespace(usercontroller)
     api.add_namespace(privilegecontroller)
     api.add_namespace(flagcontroller)
     api.add_namespace(reportcontroller)
     api.add_namespace(notifcontroller)
+    api.add_namespace(replycontroller)
 
     # register blueprint
     app.register_blueprint(blueprint)
