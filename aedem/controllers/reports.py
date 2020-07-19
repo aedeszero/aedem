@@ -4,6 +4,7 @@ from flask_restplus import Namespace, Resource, fields
 from aedem.utils import dictionarize
 
 from aedem.models import Session
+from aedem.models.users import User
 from aedem.models.reports import Report
 from aedem.models.attachments import Attachment
 
@@ -31,6 +32,9 @@ create_report_model = namespace.model("create_report", {
         required = True),
     "description": fields.String(
         description = "Descrição da denúncia",
+        required = True),
+    "user": fields.String(
+        description = "UUID do usuário criador da denúncia",
         required = True),
     "attachments": fields.String(
         description = "Lista de links das imagens da denúncia",
@@ -86,12 +90,30 @@ class ReportList(Resource):
             description = reportdata['description']
         )
 
+        # check if given user exists
+        user_id = reportdata['user']
+        given_user = session.query(User).filter_by(id = user_id)
+
+        if given_user.scalar() is None:
+            response = {
+                "status": 404,
+                "message": "Not Found",
+                "error": True,
+                "response": "User not found"
+            }
+            return jsonify(response)
+        
+        # create and attach attachments
         for attachment in reportdata['attachments']:
             attach = Attachment(
                 attachment_addr = attachment
             )
             attach.report = new_report
+            attach.user = given_user.one()
             session.add(attach)
+
+        # attach given user
+        new_report.user = given_user.one()
 
         # add new report to database
         session.add(new_report)
