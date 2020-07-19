@@ -34,7 +34,7 @@ $ python3.8 app.py
 
 - Carlos H. R. Barbosa \([@henriquerubia](https://github.com/henriquerubia "Henrique Rubia")\)
 - Kleiton C. A. Santos \([@kleitonv3](https://github.com/kleitonv3 "Kleiton Cássio")\)
-- Ailton J. B. Junior \([@Junior41](https://github.com/kleitonv3 "A.J.B. Junior")\)
+- Ailton J. B. Junior \([@Junior41](https://github.com/Junior41 "A.J.B. Junior")\)
 
 # Licença
 
