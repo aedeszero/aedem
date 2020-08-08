@@ -22,6 +22,7 @@ def create_app() -> Flask:
     from aedem.models.attachments import Attachment
     from aedem.models.notifications import Notification
     from aedem.models.replies import Reply
+    from aedem.models.news import News
     initialize_database(engine)
     
     # create Flask blueprint
@@ -47,12 +48,14 @@ def create_app() -> Flask:
     from aedem.controllers.reports import namespace as reportcontroller
     from aedem.controllers.notifications import namespace as notifcontroller
     from aedem.controllers.replies import namespace as replycontroller
+    from aedem.controllers.news import namespace as newscontroller
     api.add_namespace(usercontroller)
     api.add_namespace(privilegecontroller)
     api.add_namespace(flagcontroller)
     api.add_namespace(reportcontroller)
     api.add_namespace(notifcontroller)
     api.add_namespace(replycontroller)
+    api.add_namespace(newscontroller)
 
     # register blueprint
     app.register_blueprint(blueprint)
